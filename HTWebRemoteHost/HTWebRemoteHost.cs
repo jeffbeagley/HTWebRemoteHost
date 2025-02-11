@@ -18,7 +18,7 @@ namespace HTWebRemoteHost
 
         public HTWebRemoteHost()
         {
-            IP = ConfigHelper.LocalIPAddress;
+            IP = "0.0.0.0"; //IP needs to be on loopback interface so host can access
             Console.WriteLine($"Listening on: http://{IP}:5000");
 
             httpThread = new Thread(StartListen);
