@@ -13,6 +13,8 @@ RUN dotnet publish -c release -o /app --no-restore
 # The build layer essentially gets tossed away at runtime making the project smaller
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS run
 
+ENV CONTAINER=true
+
 WORKDIR /app
 
 COPY --from=build /app .

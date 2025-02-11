@@ -15,10 +15,17 @@ namespace HTWebRemoteHost
         private string IP;
         private readonly Thread httpThread;
         private bool startFail = false;
-
+        private bool isContainer = false;
         public HTWebRemoteHost()
         {
+			string containerEnv = Environment.GetEnvironmentVariable("CONTAINER", EnvironmentVariableTarget.Process) ?? "false";
+			bool isContainer = string.Equals(containerEnv, "true", StringComparison.OrdinalIgnoreCase);
+
             IP = "0.0.0.0"; //IP needs to be on loopback interface so host can access
+			if(!isContainer) {
+				IP = ConfigHelper.LocalIPAddress;
+			}
+
             Console.WriteLine($"Listening on: http://{IP}:5000");
 
             httpThread = new Thread(StartListen);
