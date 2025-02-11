@@ -23,7 +23,6 @@ The primary method for updating the HTWebRemoteHost app is to use the update but
 
 In order to control an Nvidia Shield from HTWebRemoteHost, you *may* need to first control it via remote buttons on Windows with [HTWebRemote](https://github.com/nicko88/HTWebRemote).  Then use the "Transfer NVShield Authorization" option found in the "Tools" menu in the "Manage Remote Host" screen inside the HTWebRemote Windows app.
 
-
 ## Run as Container
 You can build and run this project in a container
 
@@ -33,7 +32,13 @@ You can build and run this project in a container
 docker build . -t remote
 ```
 
-### Running project
+### Running project in foreground
 ```shell
-docker run -it -p 5000:5000 remote
+docker run -it -p 5000:5000 -v "$(pwd)/htwebremote/:/app/htwebremote" remote
+```
+
+### Run project in background
+
+```shell
+docker run -d -p 5000:5000 -v "$(pwd)/htwebremote/:/app/htwebremote" remote
 ```
