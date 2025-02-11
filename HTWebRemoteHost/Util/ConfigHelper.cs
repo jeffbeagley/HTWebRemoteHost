@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -11,7 +12,26 @@ namespace HTWebRemoteHost.Util
 {
     class ConfigHelper
     {
-        public static string WorkingPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+		private static readonly string containerEnv = Environment.GetEnvironmentVariable("CONTAINER", EnvironmentVariableTarget.Process) ?? "false";
+		private static readonly bool isContainer = string.Equals(containerEnv, "true", StringComparison.OrdinalIgnoreCase);
+
+		public static string WorkingPath
+		{
+			get
+			{
+				if (isContainer)
+				{
+					// If running in a container, set the working path to a different location
+					return "/app/htwebremote"; // Example path, adjust as needed for your container setup
+				}
+				else
+				{
+					// If not in a container, use the current process's directory
+					return Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+				}
+			}
+		}
+
         public static string DeviceFile = Path.Combine(WorkingPath, "HTWebRemoteDevices.txt");
         public static string browsePaths = Path.Combine(WorkingPath, "HTWebRemoteBrowsePaths.txt");
         public static string jsonButtonFiles = Path.Combine(WorkingPath, "HTWebRemoteButtons");
