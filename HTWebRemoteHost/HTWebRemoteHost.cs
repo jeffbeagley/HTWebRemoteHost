@@ -69,7 +69,7 @@ namespace HTWebRemoteHost
 			string responseString = "Default response";
 
 			if (request.Url.AbsolutePath == "/status") {
-					responseString = "Service is running.";
+				responseString = "Service is running.";
 			}
 
             if (!string.IsNullOrEmpty(queryData))
