@@ -66,20 +66,20 @@ namespace HTWebRemoteHost
 
             string queryData = ProcessCommand(request);
             string htmlPage = ProcessResponse(request);
+			string responseString = "Default response";
+
+			if (request.Url.AbsolutePath == "/status") {
+					responseString = "Service is running.";
+			}
 
             if (!string.IsNullOrEmpty(queryData))
             {
                 htmlPage = htmlPage.Replace("null;", "alert('" + queryData + "')");
             }
 
-            byte[] buffer;
-            if (htmlPage != null)
-            {
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+            if (htmlPage != null) {
                 buffer = System.Text.Encoding.UTF8.GetBytes(htmlPage);
-            }
-            else
-            {
-                buffer = System.Text.Encoding.UTF8.GetBytes(" ");
             }
 
             response.ContentLength64 = buffer.Length;
